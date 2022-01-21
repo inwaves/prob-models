@@ -8,7 +8,8 @@ def sample(model, x, steps, temperature=1.0, sample=False, top_k=None):
     model.eval()
 
     for k in range(steps):
-        logits = model(x)
+        logits, _ = model(x)
+
         logits = logits[:, -1, :] / temperature
 
         # optionally crop probabilities to only the top k options

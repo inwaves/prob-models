@@ -23,7 +23,7 @@ class LitRnn(pl.LightningModule):
 
         self.tok_emb = nn.Embedding(vocab_size, n_embd)
         self.rnn = nn.RNN(n_embd, hidden_size, batch_first=True)
-        self.linear = nn.Linear(hidden_size, vocab_size)
+        self.linear = nn.Linear(hidden_size, vocab_size, bias=False)
 
     def forward(self, idx):
         batch_size = idx.size(0)
@@ -32,9 +32,6 @@ class LitRnn(pl.LightningModule):
         token_embeddings = self.tok_emb(idx)
 
         out, hidden_state = self.rnn(token_embeddings, hidden_state)
-
-        # Why is this reshaping necessary?
-        out = out.contiguous().view(-1, self.config.hidden_size)
         out = self.linear(out)
 
         return out, hidden_state

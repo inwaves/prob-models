@@ -31,8 +31,9 @@ def give_exam(dataset, batch_size=32, max_batches=-1):
             results.append(int(correct[i]))
             judge = 'YEP!!!' if correct[i] else 'NOPE'
             if not correct[i]:
-                print(f"GPT claims that {d1i[i]:03d} + {d2i[i]:03d} = {d3i_pred[i]:03d} "
-                      f"(gt is {d3i_gt[i]:03d}; {judge})")
+                pass
+                # print(f"GPT claims that {d1i[i]:03d} + {d2i[i]:03d} = {d3i_pred[i]:03d} "
+                #       f"(gt is {d3i_gt[i]:03d}; {judge})")
 
         if 0 <= max_batches <= b + 1:
             break
@@ -69,7 +70,7 @@ if __name__ == '__main__':
     lr_decay = LearningRateDecayCallback(learning_rate=6e-4, warmup_tokens=1024,
                                          final_tokens=50 * len(train_dataset) * (ndigit + 1))
 
-    trainer = Trainer(max_epochs=1, callbacks=[lr_decay])
+    trainer = Trainer(max_epochs=50, callbacks=[lr_decay])
     trainer.fit(model, train_dataloader, val_dataloader)
 
     # training set: how well did we memorize?

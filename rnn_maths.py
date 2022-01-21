@@ -32,8 +32,9 @@ def give_exam(dataset, batch_size=32, max_batches=-1):
             results.append(int(correct[i]))
             judge = 'YEP!!!' if correct[i] else 'NOPE'
             if not correct[i]:
-                print(f"RN claims that {d1i[i]:03d} + {d2i[i]:03d} = {d3i_pred[i]:03d} "
-                      f"(gt is {d3i_gt[i]:03d}; {judge})")
+                pass
+                # print(f"RN claims that {d1i[i]:03d} + {d2i[i]:03d} = {d3i_pred[i]:03d} "
+                #       f"(gt is {d3i_gt[i]:03d}; {judge})")
 
         if 0 <= max_batches <= b + 1:
             break
@@ -61,7 +62,7 @@ if __name__ == '__main__':
 
 
     # initialize a baby GPT model
-    model = LitRnn(vocab_size=train_dataset.vocab_size, hidden_size=12, n_embd=128, learning_rate=6e-4)
+    model = LitRnn(vocab_size=train_dataset.vocab_size, hidden_size=100, n_embd=128, learning_rate=6e-4)
 
     lr_decay = LearningRateDecayCallback(learning_rate=6e-4, warmup_tokens=1024,
                                          final_tokens=50 * len(train_dataset) * (ndigit + 1))

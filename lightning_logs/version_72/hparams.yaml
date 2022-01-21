@@ -1,0 +1,8 @@
+betas: !!python/tuple
+- 0.9
+- 0.95
+hidden_size: 40
+learning_rate: 0.0006
+n_embd: 128
+vocab_size: 10
+weight_decay: 0.1
