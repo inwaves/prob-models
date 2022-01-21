@@ -25,6 +25,8 @@ class LitRnn(pl.LightningModule):
         self.rnn = nn.RNN(n_embd, hidden_size, batch_first=True)
         self.linear = nn.Linear(hidden_size, vocab_size, bias=False)
 
+        logger.info("number of parameters: %e", sum(p.numel() for p in self.parameters()))
+
     def forward(self, idx):
         batch_size = idx.size(0)
 
