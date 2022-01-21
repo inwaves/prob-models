@@ -69,7 +69,7 @@ if __name__ == '__main__':
     lr_decay = LearningRateDecayCallback(learning_rate=6e-4, warmup_tokens=1024,
                                          final_tokens=50 * len(train_dataset) * (ndigit + 1))
 
-    trainer = Trainer(max_epochs=50, callbacks=[lr_decay])
+    trainer = Trainer(max_epochs=1, callbacks=[lr_decay])
     trainer.fit(model, train_dataloader, val_dataloader)
 
     # training set: how well did we memorize?
