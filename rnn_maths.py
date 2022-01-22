@@ -1,3 +1,4 @@
+import time
 import logging
 import numpy as np
 import torch
@@ -10,6 +11,36 @@ from addition_dataset import AdditionDataset
 from mingpt.utils import set_seed
 from rnn.utils import sample
 from rnn.model import LitRnn
+
+
+def give_exam_3seq(dataset, batch_size=32, max_batches=-1):
+    results = []
+    loader = DataLoader(dataset, batch_size=batch_size)
+    for b, (x, y) in enumerate(loader):
+        x = x.to(model.device)
+        input_sequence = x[:, :3 * ndigit]  # The first three numbers, the second of which is a decoy.
+        output_sequence = sample(model, input_sequence, ndigit + 1)
+        d3 = output_sequence[:, -(ndigit + 1):]
+        factors = torch.tensor([[10 ** i for i in range(ndigit + 1)][::-1]]).to(model.device)
+
+        # decode the integers from individual digits
+        d1i = (input_sequence[:, :ndigit] * factors[:, 1:]).sum(1)
+        d2i = (input_sequence[:, 2 * ndigit:3 * ndigit] * factors[:, 1:]).sum(1)
+        d3i_pred = (d3 * factors).sum(1)
+        d3i_gt = d1i + d2i
+        correct = (d3i_pred == d3i_gt).cpu()  # Software 1.0 vs. Software 2.0 fight RIGHT on this line, lol
+        for i in range(x.size(0)):
+            results.append(int(correct[i]))
+            judge = 'YEP!!!' if correct[i] else 'NOPE'
+            if not correct[i]:
+                pass
+                # print(f"RNN claims that {d1i[i]:03d} + {d2i[i]:03d} = {d3i_pred[i]:03d} "
+                #       f"(gt is {d3i_gt[i]:03d}; {judge})")
+
+        if 0 <= max_batches <= b + 1:
+            break
+
+    print(f"final score: {np.sum(results):d}/{len(results):d} = {100 * np.mean(results):.2f}% correct")
 
 
 def give_exam(dataset, batch_size=32, max_batches=-1):
@@ -60,8 +91,8 @@ if __name__ == '__main__':
 
     # Create a dataset for e.g. 2-digit addition.
     ndigit = 2
-    train_dataset = AdditionDataset(ndigit=ndigit, split='train')
-    test_dataset = AdditionDataset(ndigit=ndigit, split='test')
+    train_dataset = AdditionDataset(ndigit=ndigit, seqlen=3, split='train')
+    test_dataset = AdditionDataset(ndigit=ndigit, seqlen=3, split='test')
     train_dataloader = DataLoader(train_dataset, batch_size=128, num_workers=0)
     val_dataloader = DataLoader(test_dataset, batch_size=128, num_workers=0)
 
@@ -71,11 +102,15 @@ if __name__ == '__main__':
     lr_decay = LearningRateDecayCallback(learning_rate=6e-4, warmup_tokens=1024,
                                          final_tokens=50 * len(train_dataset) * (ndigit + 1))
 
+    # Train the RNN.
+    tic = time.time()
     trainer = Trainer(max_epochs=1, callbacks=[lr_decay])
     trainer.fit(model, train_dataloader, val_dataloader)
+    toc = time.time()
+    print(f"Training took {toc - tic:.2f} seconds.")
 
     # training set: how well did we memorize?
-    give_exam(train_dataset, batch_size=1024, max_batches=10)
+    give_exam_3seq(train_dataset, batch_size=1024, max_batches=10)
 
     # test set: how well did we generalize?
-    give_exam(test_dataset, batch_size=1024, max_batches=-1)
+    give_exam_3seq(test_dataset, batch_size=1024, max_batches=-1)
