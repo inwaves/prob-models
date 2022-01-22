@@ -131,6 +131,6 @@ if __name__ == '__main__':
                     for _ in range(3)]
 
     with open("./logs/log.txt", "a+") as f:
-        f.write(f"RNN {ndigit:d}-digit addition, seqlen {args.seqlen}: "
+        f.write(f"RNN {ndigit:d}-digit addition, epochs: {args.epochs} seqlen {args.seqlen}: "
                 f"{100*np.mean(train_results):.2f}% train, {100*np.mean(test_results):.2f}% test. "
                 f"Time elapsed: {toc-tic}s.\n")
