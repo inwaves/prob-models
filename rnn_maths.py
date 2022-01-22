@@ -96,7 +96,7 @@ if __name__ == '__main__':
     # of the numbers are decoys (i.e. not used in the addition).
     parser.add_argument("--seqlen", type=int, default=2, help="sequence length")
     parser.add_argument("--epochs", type=int, default=20, help="number of epochs")
-    parser.add_argument("--args.ndigits", type=int, default=2, help="number of digits")
+    parser.add_argument("--ndigits", type=int, default=2, help="number of digits")
     args = parser.parse_args()
 
     # Make deterministic.
