@@ -104,8 +104,8 @@ if __name__ == '__main__':
 
     train_dataset = AdditionDataset(ndigit=ndigit, seqlen=args.seqlen, split='train')
     test_dataset = AdditionDataset(ndigit=ndigit, seqlen=args.seqlen, split='test')
-    train_dataloader = DataLoader(train_dataset, batch_size=128, num_workers=0)
-    val_dataloader = DataLoader(test_dataset, batch_size=128, num_workers=0)
+    train_dataloader = DataLoader(train_dataset, batch_size=128, num_workers=10)
+    val_dataloader = DataLoader(test_dataset, batch_size=128, num_workers=10)
 
     # initialize a baby GPT model
     model = GPT(vocab_size=train_dataset.vocab_size,
@@ -120,7 +120,7 @@ if __name__ == '__main__':
 
     # Train the model.
     tic = time.time()
-    trainer = Trainer(gpus=2, precision=16, max_epochs=args.epochs, callbacks=[lr_decay])
+    trainer = Trainer(gpus=2, distributed_backend="ddp", precision=16, max_epochs=args.epochs, callbacks=[lr_decay])
     trainer.fit(model, train_dataloader, val_dataloader)
     toc = time.time()
     print(f"Training took {toc - tic:.2f} seconds.")
