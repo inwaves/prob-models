@@ -20,14 +20,14 @@ def give_exam_generalised(dataset, seqlen=2, batch_size=32, max_batches=-1):
         x = x.to(model.device)
 
         # The first numbers, the all of which are decoys except the first and last.
-        input_sequence = x[:, :seqlen * ndigit]
-        output_sequence = sample(model, input_sequence, ndigit + 1)
-        d3 = output_sequence[:, -(ndigit + 1):]
-        factors = torch.tensor([[10 ** i for i in range(ndigit + 1)][::-1]]).to(model.device)
+        input_sequence = x[:, :seqlen * args.ndigits]
+        output_sequence = sample(model, input_sequence, args.ndigits + 1)
+        d3 = output_sequence[:, -(args.ndigits + 1):]
+        factors = torch.tensor([[10 ** i for i in range(args.ndigits + 1)][::-1]]).to(model.device)
 
         # decode the integers from individual digits
-        d1i = (input_sequence[:, :ndigit] * factors[:, 1:]).sum(1)
-        d2i = (input_sequence[:, (seqlen-1) * ndigit:seqlen * ndigit] * factors[:, 1:]).sum(1)
+        d1i = (input_sequence[:, :args.ndigits] * factors[:, 1:]).sum(1)
+        d2i = (input_sequence[:, (seqlen-1) * args.ndigits:seqlen * args.ndigits] * factors[:, 1:]).sum(1)
         d3i_pred = (d3 * factors).sum(1)
         d3i_gt = d1i + d2i
 
@@ -52,17 +52,17 @@ def give_exam(dataset, batch_size=32, max_batches=-1):
     loader = DataLoader(dataset, batch_size=batch_size)
     for b, (x, y) in enumerate(loader):
         x = x.to(model.device)
-        d1d2 = x[:, :ndigit * 2]  # A list comprising the first two numbers, `ndigit` digits each.
-        d1d2d3 = sample(model, d1d2, ndigit + 1)  # Predict the next number, at most `ndigit + 1` digits.
-        d3 = d1d2d3[:, -(ndigit + 1):]  # Extract the last number.
+        d1d2 = x[:, :args.ndigits * 2]  # A list comprising the first two numbers, `args.ndigits` digits each.
+        d1d2d3 = sample(model, d1d2, args.ndigits + 1)  # Predict the next number, at most `args.ndigits + 1` digits.
+        d3 = d1d2d3[:, -(args.ndigits + 1):]  # Extract the last number.
 
         # A list of factors of 10 in decreasing order, e.g. 10^3, 10^2, 10^1, 10^0.
-        factors = torch.tensor([[10 ** i for i in range(ndigit + 1)][::-1]]).to(model.device)
+        factors = torch.tensor([[10 ** i for i in range(args.ndigits + 1)][::-1]]).to(model.device)
 
         # Decode the numbers by multiplying digits with factors.
         # The first colon in each list index is so that the nested list format is preserved.
-        d1i = (d1d2[:, :ndigit] * factors[:, 1:]).sum(1)
-        d2i = (d1d2[:, ndigit:ndigit * 2] * factors[:, 1:]).sum(1)
+        d1i = (d1d2[:, :args.ndigits] * factors[:, 1:]).sum(1)
+        d2i = (d1d2[:, args.ndigits:args.ndigits * 2] * factors[:, 1:]).sum(1)
         d3i_pred = (d3 * factors).sum(1)
 
         # The ground truth is the sum of the first two numbers.
@@ -95,17 +95,18 @@ if __name__ == '__main__':
     # The length of the input sequence, where seqlen - 2
     # of the numbers are decoys (i.e. not used in the addition).
     parser.add_argument("--seqlen", type=int, default=2, help="sequence length")
-    parser.add_argument("--epochs", type=int, default=20, help="sequence length")
+    parser.add_argument("--epochs", type=int, default=20, help="number of epochs")
+    parser.add_argument("--args.ndigits", type=int, default=2, help="number of digits")
     args = parser.parse_args()
 
     # Make deterministic.
     set_seed(42)
 
     # Create a dataset for e.g. 2-digit addition.
-    ndigit = 2
+    args.ndigits = 2
 
-    train_dataset = AdditionDataset(ndigit=ndigit, seqlen=args.seqlen, split='train')
-    test_dataset = AdditionDataset(ndigit=ndigit, seqlen=args.seqlen, split='test')
+    train_dataset = AdditionDataset(ndigit=args.ndigits, seqlen=args.seqlen, split='train')
+    test_dataset = AdditionDataset(ndigit=args.ndigits, seqlen=args.seqlen, split='test')
     train_dataloader = DataLoader(train_dataset, batch_size=128, num_workers=10)
     val_dataloader = DataLoader(test_dataset, batch_size=128, num_workers=10)
 
@@ -113,7 +114,7 @@ if __name__ == '__main__':
     model = LitRnn(vocab_size=train_dataset.vocab_size, hidden_size=560, n_embd=128, learning_rate=6e-4)
 
     lr_decay = LearningRateDecayCallback(learning_rate=6e-4, warmup_tokens=1024,
-                                         final_tokens=50 * len(train_dataset) * (ndigit + 1))
+                                         final_tokens=50 * len(train_dataset) * (args.ndigits + 1))
 
     # Train the RNN.
     tic = time.time()
@@ -130,6 +131,6 @@ if __name__ == '__main__':
                     for _ in range(3)]
 
     with open("./logs/log.txt", "a+") as f:
-        f.write(f"RNN {ndigit:d}-digit addition, epochs: {args.epochs} seqlen {args.seqlen}: "
+        f.write(f"RNN {args.ndigits:d}-digit addition, epochs: {args.epochs} seqlen {args.seqlen}: "
                 f"{100*np.mean(train_results):.2f}% train, {100*np.mean(test_results):.2f}% test. "
                 f"Time elapsed: {toc-tic}s.\n")
