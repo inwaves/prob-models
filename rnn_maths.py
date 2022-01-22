@@ -59,7 +59,7 @@ if __name__ == '__main__':
     set_seed(42)
 
     # Create a dataset for e.g. 2-digit addition.
-    ndigit = 3
+    ndigit = 2
     train_dataset = AdditionDataset(ndigit=ndigit, split='train')
     test_dataset = AdditionDataset(ndigit=ndigit, split='test')
     train_dataloader = DataLoader(train_dataset, batch_size=128, num_workers=0)

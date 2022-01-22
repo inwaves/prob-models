@@ -2,7 +2,10 @@ import numpy as np
 import torch
 from torch.utils.data import Dataset
 
+rng = np.random.default_rng()
 
+
+# noinspection PyStringFormat
 class AdditionDataset(Dataset):
     """
     Returns addition problems of up to some number of digits in the inputs. Recall
@@ -43,13 +46,14 @@ class AdditionDataset(Dataset):
         self.split = split  # train/test
         self.ndigit = ndigit
         self.vocab_size = 10  # 10 possible digits 0..9
-        # +1 due to potential carry overflow, but then -1 because very last digit doesn't plug back
-        # FIXME: how would this change if I'm adding decoys in the sequence?
-        self.block_size = ndigit + ndigit + ndigit + 1 - 1
         self.seqlen = seqlen
 
+        # +1 due to potential carry overflow, but then -1 because very last digit doesn't plug back
+        self.block_size = self.ndigit * (self.seqlen+1)
+        print(f"seqlen: {seqlen}, block_size: {self.block_size}, ndigit: {ndigit}")
+
         # split up all addition problems into either training data or test data
-        num = (10 ** self.ndigit) ** seqlen  # total number of possible combinations
+        num = (10 ** self.ndigit) ** 2  # total number of possible combinations
         r = np.random.RandomState(1337)  # make deterministic
         perm = r.permutation(num)
         num_test = min(int(num * 0.2), 1000)  # 20% of the whole dataset, or only up to 1000
@@ -74,22 +78,17 @@ class AdditionDataset(Dataset):
         # Given a problem, recover the numbers in the sequence.
         idx = self.ixes[idx]
         factor = 10 ** self.ndigit
-        nums = []
+        a = idx // factor
+        b = idx % factor
+        target_sum = a + b
 
-        while idx > 0:
-            nums.append(idx % factor)
-            idx //= factor
+        render = f"%0{self.ndigit}d%0{self.ndigit}d%0{self.ndigit}d%0{self.ndigit + 1}d" % \
+                 (a, rng.integers(0, 100, 1)[0], b, target_sum)
 
-        nums = nums[::-1]
-
-        c = nums[0]+nums[-1]
-        nums = [f"%0{self.ndigit}d" % n for n in nums]
-        nums.append(f"%0{self.ndigit+1}d" % c)
-        render = "".join(nums)
         dix = [int(s) for s in render]  # convert each character to its token index
 
         # x will be input to GPT and y will be the associated expected outputs
         x = torch.tensor(dix[:-1], dtype=torch.long)
         y = torch.tensor(dix[1:], dtype=torch.long)  # predict the next token in the sequence
-        y[:self.ndigit * 2 - 1] = -100  # we will only train in the output locations. -100 will mask loss to zero
+        y[:self.seqlen * 2 - 1] = -100  # we will only train in the output locations. -100 will mask loss to zero
         return x, y
