@@ -6,7 +6,6 @@ import torch.nn.functional as F
 import pytorch_lightning as pl
 
 logger = logging.getLogger(__name__)
-device = torch.device("cuda") if torch.cuda.is_available() else "cpu"
 
 
 class LitRnn(pl.LightningModule):
@@ -32,7 +31,7 @@ class LitRnn(pl.LightningModule):
         batch_size = idx.size(0)
 
         hidden_state = self.init_hidden_state(batch_size)
-        token_embeddings = self.tok_emb(idx)
+        token_embeddings = self.tok_emb(idx).to(self.device)
 
         out, hidden_state = self.rnn(token_embeddings, hidden_state)
         out = self.linear(out)
@@ -41,7 +40,7 @@ class LitRnn(pl.LightningModule):
 
     def init_hidden_state(self, batch_size):
         hidden = torch.zeros(1, batch_size, self.config.hidden_size)
-        return hidden.to(device)
+        return hidden.to(self.device)
 
     def training_step(self, batch, batch_idx):
         idx, targets = batch
