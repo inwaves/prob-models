@@ -91,5 +91,5 @@ class AdditionDataset(Dataset):
         # x will be input to GPT and y will be the associated expected outputs
         x = torch.tensor(dix[:-1], dtype=torch.long)
         y = torch.tensor(dix[1:], dtype=torch.long)  # predict the next token in the sequence
-        # y[:self.ndigit * 2 - 1] = -100  # we will only train in the output locations. -100 will mask loss to zero
+        y[:self.ndigit * 2 - 1] = -100  # we will only train in the output locations. -100 will mask loss to zero
         return x, y
