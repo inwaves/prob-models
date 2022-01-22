@@ -31,15 +31,25 @@ class AdditionDataset(Dataset):
     fun exercise: does it help if the result is asked to be produced in reverse order?
     """
 
-    def __init__(self, ndigit, split):
+    def __init__(self, ndigit, seqlen=2, split="train"):
+        """
+        Parameters
+        ----------
+        ndigit: how many digits each number should have.
+        seqlen:  how long the sequence should be overall. For example a length 10 means x[0]+x[9] is what we're
+        trying to predict, with the 8 numbers between them being decoys.
+        split: whether train or test set.
+        """
         self.split = split  # train/test
         self.ndigit = ndigit
         self.vocab_size = 10  # 10 possible digits 0..9
         # +1 due to potential carry overflow, but then -1 because very last digit doesn't plug back
+        # FIXME: how would this change if I'm adding decoys in the sequence?
         self.block_size = ndigit + ndigit + ndigit + 1 - 1
+        self.seqlen = seqlen
 
         # split up all addition problems into either training data or test data
-        num = (10 ** self.ndigit) ** 2  # total number of possible combinations
+        num = (10 ** self.ndigit) ** seqlen  # total number of possible combinations
         r = np.random.RandomState(1337)  # make deterministic
         perm = r.permutation(num)
         num_test = min(int(num * 0.2), 1000)  # 20% of the whole dataset, or only up to 1000
@@ -49,16 +59,37 @@ class AdditionDataset(Dataset):
         return self.ixes.size
 
     def __getitem__(self, idx):
-        # given a problem index idx, first recover the associated a + b
+        """
+
+        Parameters
+        ----------
+        idx: index
+
+        Returns
+        -------
+        x: data for the index
+        y: target for the index
+
+        """
+        # Given a problem, recover the numbers in the sequence.
         idx = self.ixes[idx]
-        nd = 10 ** self.ndigit
-        a = idx // nd
-        b = idx % nd
-        c = a + b
-        render = f'%0{self.ndigit}d%0{self.ndigit}d%0{self.ndigit + 1}d' % (a, b, c)  # e.g. 03+25=28 becomes "0325028"
+        factor = 10 ** self.ndigit
+        nums = []
+
+        while idx > 0:
+            nums.append(idx % factor)
+            idx //= factor
+
+        nums = nums[::-1]
+
+        c = nums[0]+nums[-1]
+        nums = [f"%0{self.ndigit}d" % n for n in nums]
+        nums.append(f"%0{self.ndigit+1}d" % c)
+        render = "".join(nums)
         dix = [int(s) for s in render]  # convert each character to its token index
+
         # x will be input to GPT and y will be the associated expected outputs
         x = torch.tensor(dix[:-1], dtype=torch.long)
         y = torch.tensor(dix[1:], dtype=torch.long)  # predict the next token in the sequence
-        y[:self.ndigit * 2 - 1] = -100  # we will only train in the output locations. -100 will mask loss to zero
+        # y[:self.ndigit * 2 - 1] = -100  # we will only train in the output locations. -100 will mask loss to zero
         return x, y

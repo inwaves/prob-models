@@ -1,0 +1,13 @@
+attn_pdrop: 0.1
+betas: !!python/tuple
+- 0.9
+- 0.95
+block_size: 9
+embd_pdrop: 0.1
+learning_rate: 0.0006
+n_embd: 128
+n_head: 4
+n_layer: 2
+resid_pdrop: 0.1
+vocab_size: 10
+weight_decay: 0.1
