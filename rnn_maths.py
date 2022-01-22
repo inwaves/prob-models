@@ -6,7 +6,6 @@ import torch
 
 from torch.utils.data import DataLoader
 from pytorch_lightning import Trainer
-
 from mingpt.lr_decay import LearningRateDecayCallback
 from addition_dataset import AdditionDataset
 from mingpt.utils import set_seed
