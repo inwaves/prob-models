@@ -97,7 +97,7 @@ if __name__ == '__main__':
     val_dataloader = DataLoader(test_dataset, batch_size=128, num_workers=0)
 
     # Initialise an RNN.
-    model = LitRnn(vocab_size=train_dataset.vocab_size, hidden_size=100, n_embd=128, learning_rate=6e-4)
+    model = LitRnn(vocab_size=train_dataset.vocab_size, hidden_size=560, n_embd=128, learning_rate=6e-4)
 
     lr_decay = LearningRateDecayCallback(learning_rate=6e-4, warmup_tokens=1024,
                                          final_tokens=50 * len(train_dataset) * (ndigit + 1))
