@@ -81,9 +81,12 @@ class AdditionDataset(Dataset):
         a = idx // factor
         b = idx % factor
         target_sum = a + b
-
-        render = f"%0{self.ndigit}d%0{self.ndigit}d%0{self.ndigit}d%0{self.ndigit + 1}d" % \
-                 (a, rng.integers(0, 100, 1)[0], b, target_sum)
+        nums = [a]
+        decoys = [rng.integers(0, 100, 1)[0] for _ in range(self.seqlen-2)]
+        nums.extend(decoys)
+        nums.extend([b, target_sum])
+        template = f"%0{self.ndigit}d" * (len(nums)-1) + f"%0{self.ndigit+1}d"
+        render = template % tuple(nums)
 
         dix = [int(s) for s in render]  # convert each character to its token index
 
