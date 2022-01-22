@@ -107,8 +107,8 @@ if __name__ == '__main__':
 
     train_dataset = AdditionDataset(ndigit=ndigit, seqlen=args.seqlen, split='train')
     test_dataset = AdditionDataset(ndigit=ndigit, seqlen=args.seqlen, split='test')
-    train_dataloader = DataLoader(train_dataset, batch_size=128, num_workers=10)
-    val_dataloader = DataLoader(test_dataset, batch_size=128, num_workers=10)
+    train_dataloader = DataLoader(train_dataset, batch_size=128, num_workers=0)
+    val_dataloader = DataLoader(test_dataset, batch_size=128, num_workers=0)
 
     # Initialise an RNN.
     model = LitRnn(vocab_size=train_dataset.vocab_size, hidden_size=560, n_embd=128, learning_rate=6e-4)

@@ -15,3 +15,4 @@ GPT 2-digit addition, seqlen 2: 99.91% train, 99.90% test. Time elapsed: 64.4278
 RNN 2-digit addition, seqlen 4: 97.07% train, 96.53% test. Time elapsed: 81.54357719421387s.
 RNN 2-digit addition, seqlen 5: 95.21% train, 95.23% test. Time elapsed: 96.44104027748108s.
 RNN 2-digit addition, seqlen 6: 16.07% train, 11.90% test. Time elapsed: 108.41840410232544s.
+RNN 2-digit addition, seqlen 7: 0.96% train, 0.77% test. Time elapsed: 137.28638792037964s.
