@@ -181,4 +181,45 @@ RNN 2-digit addition, epochs: 50 seqlen 10: 14.21% train, 10.00% test. Time elap
 RNN 2-digit addition, epochs: 50 seqlen 10: 19.83% train, 13.57% test. Time elapsed: 140.63002967834473s.
 RNN 2-digit addition, epochs: 50 seqlen 10: 21.83% train, 15.63% test. Time elapsed: 143.18511939048767s.
 RNN 2-digit addition, epochs: 50 seqlen 10: 16.32% train, 12.00% test. Time elapsed: 141.59645128250122s.
-RNN 2-digit addition, epochs: 50 seqlen 10: 0.72% train, 0.40% test. Time elapsed: 141.5806634426117s.
+RNN 2-digit addition, epochs: 50 seqlen 10: 0.72% train, 0.40% test. Time elapsed: 141.5806634426117s.GPT 2-digit addition, epochs: 20 seqlen 3: 89.63% train, 89.10% test. Time elapsed: 50.10504078865051s.
+RNN 2-digit addition, epochs: 20 seqlen 2: 1.48% train, 1.40% test. Time elapsed: 0.5595600605010986s.
+RNN 2-digit addition, epochs: 20 seqlen 2: 1.16% train, 1.20% test. Time elapsed: 0.6055319309234619s.
+RNN 2-digit addition, epochs: 20 seqlen 2: 1.42% train, 1.20% test. Time elapsed: 0.6410267353057861s.
+RNN 2-digit addition, epochs: 20 seqlen 2: 1.44% train, 1.50% test. Time elapsed: 0.8921480178833008s.
+GPT 2-digit addition, epochs: 20 seqlen 2: 1.52% train, 1.00% test. Time elapsed: 1.0895469188690186s.
+RNN 2-digit addition, epochs: 20 seqlen 2: 99.72% train, 99.80% test. Time elapsed: 27.15802311897278s.
+RNN 2-digit addition, epochs: 20 seqlen 3: 96.78% train, 96.33% test. Time elapsed: 39.6275908946991s.
+RNN 2-digit addition, epochs: 20 seqlen 4: 95.25% train, 94.43% test. Time elapsed: 49.052063941955566s.
+RNN 2-digit addition, epochs: 20 seqlen 5: 88.90% train, 89.77% test. Time elapsed: 60.48787593841553s.
+RNN 2-digit addition, epochs: 20 seqlen 6: 0.92% train, 0.83% test. Time elapsed: 69.03622674942017s.
+RNN 2-digit addition, epochs: 20 seqlen 7: 0.93% train, 0.80% test. Time elapsed: 75.745934009552s.
+RNN 2-digit addition, epochs: 20 seqlen 8: 0.90% train, 0.83% test. Time elapsed: 91.10915303230286s.
+RNN 2-digit addition, epochs: 20 seqlen 9: 0.95% train, 0.90% test. Time elapsed: 99.48525333404541s.
+RNN 2-digit addition, epochs: 20 seqlen 10: 0.89% train, 0.83% test. Time elapsed: 102.51202988624573s.
+RNN 2-digit addition, epochs: 50 seqlen 2: 100.00% train, 100.00% test. Time elapsed: 66.81184887886047s.
+RNN 2-digit addition, epochs: 50 seqlen 3: 100.00% train, 99.93% test. Time elapsed: 93.95911812782288s.
+RNN 2-digit addition, epochs: 50 seqlen 4: 99.57% train, 98.97% test. Time elapsed: 117.01362204551697s.
+RNN 2-digit addition, epochs: 50 seqlen 5: 96.55% train, 96.23% test. Time elapsed: 149.5744059085846s.
+RNN 2-digit addition, epochs: 50 seqlen 6: 0.89% train, 0.67% test. Time elapsed: 177.37182521820068s.
+RNN 2-digit addition, epochs: 50 seqlen 7: 0.90% train, 0.70% test. Time elapsed: 202.0330159664154s.
+RNN 2-digit addition, epochs: 50 seqlen 8: 0.99% train, 0.60% test. Time elapsed: 223.31507897377014s.
+RNN 2-digit addition, epochs: 50 seqlen 9: 0.92% train, 0.73% test. Time elapsed: 253.25772309303284s.
+RNN 2-digit addition, epochs: 50 seqlen 10: 0.94% train, 0.77% test. Time elapsed: 286.9844501018524s.
+GPT 2-digit addition, epochs: 	20 seqlen 	2: 86.52	% train, 86.80	% test. Time elapsed: 35.51553988456726s.
+GPT 2-digit addition, epochs: 	20 seqlen 	3: 98.47	% train, 98.70	% test. Time elapsed: 48.62221622467041s.
+GPT 2-digit addition, epochs: 	20 seqlen 	4: 93.39	% train, 94.33	% test. Time elapsed: 60.20242500305176s.
+GPT 2-digit addition, epochs: 	20 seqlen 	5: 86.36	% train, 86.33	% test. Time elapsed: 71.99430203437805s.
+GPT 2-digit addition, epochs: 	20 seqlen 	6: 97.30	% train, 97.37	% test. Time elapsed: 88.24286007881165s.
+GPT 2-digit addition, epochs: 	20 seqlen 	7: 90.04	% train, 89.33	% test. Time elapsed: 93.68235683441162s.
+GPT 2-digit addition, epochs: 	20 seqlen 	8: 8.04	% train, 7.43	% test. Time elapsed: 110.30952620506287s.
+GPT 2-digit addition, epochs: 	20 seqlen 	9: 8.76	% train, 8.67	% test. Time elapsed: 119.24471998214722s.
+GPT 2-digit addition, epochs: 	20 seqlen 	10: 6.35	% train, 6.27	% test. Time elapsed: 134.62760186195374s.
+GPT 2-digit addition, epochs: 	50 seqlen 	2: 99.32	% train, 99.80	% test. Time elapsed: 93.2923002243042s.
+GPT 2-digit addition, epochs: 	50 seqlen 	3: 99.02	% train, 99.03	% test. Time elapsed: 120.62217617034912s.
+GPT 2-digit addition, epochs: 	50 seqlen 	4: 99.41	% train, 99.63	% test. Time elapsed: 150.80883979797363s.
+GPT 2-digit addition, epochs: 	50 seqlen 	5: 100.00	% train, 100.00	% test. Time elapsed: 183.81643199920654s.
+GPT 2-digit addition, epochs: 	50 seqlen 	6: 97.33	% train, 97.70	% test. Time elapsed: 212.06474328041077s.
+GPT 2-digit addition, epochs: 	50 seqlen 	7: 96.06	% train, 96.30	% test. Time elapsed: 236.6423270702362s.
+GPT 2-digit addition, epochs: 	50 seqlen 	8: 99.80	% train, 100.00	% test. Time elapsed: 273.99977922439575s.
+GPT 2-digit addition, epochs: 	50 seqlen 	9: 7.91	% train, 9.13	% test. Time elapsed: 299.3976209163666s.
+GPT 2-digit addition, epochs: 	50 seqlen 	10: 10.09	% train, 9.37	% test. Time elapsed: 341.9386610984802s.

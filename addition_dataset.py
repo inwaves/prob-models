@@ -50,7 +50,6 @@ class AdditionDataset(Dataset):
 
         # +1 due to potential carry overflow, but then -1 because very last digit doesn't plug back
         self.block_size = self.ndigit * (self.seqlen+1)
-        print(f"seqlen: {seqlen}, block_size: {self.block_size}, ndigit: {ndigit}")
 
         # split up all addition problems into either training data or test data
         num = (10 ** self.ndigit) ** 2  # total number of possible combinations

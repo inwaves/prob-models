@@ -46,7 +46,6 @@ class LitRnn(pl.LightningModule):
         idx, targets = batch
         out, hidden = self.forward(idx)
 
-        # FIXME: why do we need all these .view(-1)?
         loss = F.cross_entropy(out.view(-1, out.size(-1)), targets.view(-1))
 
         result = pl.TrainResult(minimize=loss, checkpoint_on=loss)
