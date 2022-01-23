@@ -84,7 +84,7 @@ if __name__ == '__main__':
     val_dataloader = DataLoader(test_dataset, batch_size=128, num_workers=0)
 
     # Initialise an RNN.
-    model = LitRnn(vocab_size=train_dataset.vocab_size, hidden_size=375, n_embd=128, learning_rate=6e-4)
+    model = LitRnn(vocab_size=train_dataset.vocab_size, hidden_size=170, n_embd=128, learning_rate=6e-4)
 
     lr_decay = LearningRateDecayCallback(learning_rate=6e-4, warmup_tokens=1024,
                                          final_tokens=50 * len(train_dataset) * (args.ndigits + 1))
@@ -104,6 +104,6 @@ if __name__ == '__main__':
                     for _ in range(3)]
 
     with open("./logs/log.txt", "a+") as f:
-        f.write(f"RNN {args.ndigits:d}-digit addition, epochs: {args.epochs} seqlen {args.seqlen}: "
+        f.write(f"LSTM {args.ndigits:d}-digit addition, epochs: {args.epochs} seqlen {args.seqlen}: "
                 f"{100*np.mean(train_results):.2f}\t % train, {100*np.mean(test_results):.2f}\t% test. "
                 f"Time elapsed: {toc-tic}s.\n")

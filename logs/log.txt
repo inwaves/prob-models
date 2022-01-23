@@ -223,3 +223,7 @@ GPT 2-digit addition, epochs: 	50 seqlen 	7: 96.06	% train, 96.30	% test. Time e
 GPT 2-digit addition, epochs: 	50 seqlen 	8: 99.80	% train, 100.00	% test. Time elapsed: 273.99977922439575s.
 GPT 2-digit addition, epochs: 	50 seqlen 	9: 7.91	% train, 9.13	% test. Time elapsed: 299.3976209163666s.
 GPT 2-digit addition, epochs: 	50 seqlen 	10: 10.09	% train, 9.37	% test. Time elapsed: 341.9386610984802s.
+
+----------------------------------------------------------------------------------------------------------------------
+LSTMs and GRUs
+----------------------------------------------------------------------------------------------------------------------

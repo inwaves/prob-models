@@ -22,7 +22,7 @@ class LitRnn(pl.LightningModule):
         self.config = self.hparams
 
         self.tok_emb = nn.Embedding(vocab_size, n_embd)
-        self.rnn = nn.RNN(n_embd, hidden_size, batch_first=True)
+        self.rnn = nn.LSTM(n_embd, hidden_size, batch_first=True)
         self.linear = nn.Linear(hidden_size, vocab_size, bias=False)
 
         logger.info("number of parameters: %e", sum(p.numel() for p in self.parameters()))
@@ -33,10 +33,10 @@ class LitRnn(pl.LightningModule):
         hidden_state = self.init_hidden_state(batch_size)
         token_embeddings = self.tok_emb(idx).to(self.device)
 
-        out, hidden_state = self.rnn(token_embeddings, hidden_state)
+        out, (hidden_state, cell_state) = self.rnn(token_embeddings)
         out = self.linear(out)
 
-        return out, hidden_state
+        return out, hidden_state, cell_state
 
     def init_hidden_state(self, batch_size):
         hidden = torch.zeros(1, batch_size, self.config.hidden_size)
@@ -44,7 +44,7 @@ class LitRnn(pl.LightningModule):
 
     def training_step(self, batch, batch_idx):
         idx, targets = batch
-        out, hidden = self.forward(idx)
+        out, hidden, cell = self.forward(idx)
 
         loss = F.cross_entropy(out.view(-1, out.size(-1)), targets.view(-1))
 
