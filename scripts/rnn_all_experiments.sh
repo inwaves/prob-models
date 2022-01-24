@@ -17,3 +17,23 @@ python3 rnn_maths.py --epochs=50 --seqlen=7
 python3 rnn_maths.py --epochs=50 --seqlen=8
 python3 rnn_maths.py --epochs=50 --seqlen=9
 python3 rnn_maths.py --epochs=50 --seqlen=10
+
+python3 rnn_maths.py --epochs=20 --seqlen=2 --hidden_size=200
+python3 rnn_maths.py --epochs=20 --seqlen=3 --hidden_size=200
+python3 rnn_maths.py --epochs=20 --seqlen=4 --hidden_size=200
+python3 rnn_maths.py --epochs=20 --seqlen=5 --hidden_size=200
+python3 rnn_maths.py --epochs=20 --seqlen=6 --hidden_size=200
+python3 rnn_maths.py --epochs=20 --seqlen=7 --hidden_size=200
+python3 rnn_maths.py --epochs=20 --seqlen=8 --hidden_size=200
+python3 rnn_maths.py --epochs=20 --seqlen=9 --hidden_size=200
+python3 rnn_maths.py --epochs=20 --seqlen=10 --hidden_size=200
+
+python3 rnn_maths.py --epochs=50 --seqlen=2 --hidden_size=200
+python3 rnn_maths.py --epochs=50 --seqlen=3 --hidden_size=200
+python3 rnn_maths.py --epochs=50 --seqlen=4 --hidden_size=200
+python3 rnn_maths.py --epochs=50 --seqlen=5 --hidden_size=200
+python3 rnn_maths.py --epochs=50 --seqlen=6 --hidden_size=200
+python3 rnn_maths.py --epochs=50 --seqlen=7 --hidden_size=200
+python3 rnn_maths.py --epochs=50 --seqlen=8 --hidden_size=200
+python3 rnn_maths.py --epochs=50 --seqlen=9 --hidden_size=200
+python3 rnn_maths.py --epochs=50 --seqlen=10 --hidden_size=200

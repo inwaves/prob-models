@@ -63,16 +63,30 @@ class CausalSelfAttention(nn.Module):
         self.n_head = config.n_head
 
     def forward(self, x, layer_past=None):
-        B, T, C = x.size()
+        B, T, C = x.size()  # (batch, number of total digits except the last one, embedding dimension)
+
+        print(f"The things that go in my attention layer are sizes:\n")
+        print(f"B: {B}, T: {T}, C: {C}\n")
 
         # calculate query, key, values for all heads in batch and move head forward to be the batch dim
-        k = self.key(x).view(B, T, self.n_head, C // self.n_head).transpose(1, 2)  # (B, nh, T, hs)
-        q = self.query(x).view(B, T, self.n_head, C // self.n_head).transpose(1, 2)  # (B, nh, T, hs)
-        v = self.value(x).view(B, T, self.n_head, C // self.n_head).transpose(1, 2)  # (B, nh, T, hs)
+        # (batch, number of heads, digits, head size, i.e. embedding dim/number of heads)
+        k = self.key(x).view(B, T, self.n_head, C // self.n_head).transpose(1, 2)
 
-        # causal self-attention; Self-attend: (B, nh, T, hs) x (B, nh, hs, T) -> (B, nh, T, T)
+        # (batch, number of heads, digits, head size, i.e. embedding dim/number of heads)
+        q = self.query(x).view(B, T, self.n_head, C // self.n_head).transpose(1, 2)
+
+        # (batch, number of heads, digits, head size, i.e. embedding dim/number of heads)
+        v = self.value(x).view(B, T, self.n_head, C // self.n_head).transpose(1, 2)
+
+        # Causal self-attention: compute QK^T and apply mask.
+        # Self-attend: (B, nh, T, hs) x (B, nh, hs, T) -> (B, nh, T, T)
         att = (q @ k.transpose(-2, -1)) * (1.0 / math.sqrt(k.size(-1)))
+
+        # Across examples in the batch and heads for each example, if the value of
+        # attention is 0, set it to -infinity.
         att = att.masked_fill(self.mask[:, :, :T, :T] == 0, float('-inf'))
+
+        # Make attention sum to 1.
         att = F.softmax(att, dim=-1)
         att = self.attn_drop(att)
         y = att @ v  # (B, nh, T, T) x (B, nh, T, hs) -> (B, nh, T, hs)
@@ -172,7 +186,9 @@ class GPT(pl.LightningModule):
 
         # forward the GPT model
         token_embeddings = self.tok_emb(idx)  # each index maps to a (learnable) vector
+
         position_embeddings = self.pos_emb[:, :t, :]  # each position maps to a (learnable) vector
+
         x = self.drop(token_embeddings + position_embeddings)
         x = self.blocks(x)
         x = self.ln_f(x)

@@ -102,13 +102,13 @@ if __name__ == '__main__':
     toc = time.time()
     print(f"Training took {toc - tic:.2f} seconds.")
 
-    # training set: how well did we memorize?
-    train_results = [give_exam_generalised(train_dataset, seqlen=args.seqlen, batch_size=1024, max_batches=10)
-                     for _ in range(3)]
-
-    # test set: how well did we generalize?
-    test_results = [give_exam_generalised(test_dataset, seqlen=args.seqlen, batch_size=1024, max_batches=-1)
-                    for _ in range(3)]
+    # # training set: how well did we memorize?
+    # train_results = [give_exam_generalised(train_dataset, seqlen=args.seqlen, batch_size=1024, max_batches=10)
+    #                  for _ in range(3)]
+    #
+    # # test set: how well did we generalize?
+    # test_results = [give_exam_generalised(test_dataset, seqlen=args.seqlen, batch_size=1024, max_batches=-1)
+    #                 for _ in range(3)]
 
     with open("./logs/log.txt", "a+") as f:
         f.write(f"GPT {args.ndigits:d}-digit addition, epochs: \t{args.epochs} seqlen \t{args.seqlen}: "
