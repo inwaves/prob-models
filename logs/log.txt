@@ -264,3 +264,5 @@ LSTM 2-digit addition, epochs: 50 seqlen 7: 18.05	 % train, 11.27	% test. Time e
 LSTM 2-digit addition, epochs: 50 seqlen 8: 15.77	 % train, 10.50	% test. Time elapsed: 429.79628014564514s.
 LSTM 2-digit addition, epochs: 50 seqlen 9: 13.63	 % train, 8.53	% test. Time elapsed: 472.3013129234314s.
 LSTM 2-digit addition, epochs: 50 seqlen 10: 0.96	 % train, 0.70	% test. Time elapsed: 515.0257060527802s.
+LSTM 2-digit addition, epochs: 100 seqlen 6: 31.79	 % train, 24.23	% test. Time elapsed: 639.4396648406982s.
+GPT 2-digit addition, epochs: 	10 seqlen 	3: 83.69	% train, 84.33	% test. Time elapsed: 24.106653928756714s.
