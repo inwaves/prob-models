@@ -264,3 +264,5 @@ GRU 2-digit addition, epochs: 50 seqlen 10: 0.94	 % train, 0.60	% test. Time ela
 GRU 2-digit addition, epochs: 100 seqlen 6: 0.93	 % train, 0.47	% test. Time elapsed: 281.590656042099s.
 GRU 2-digit addition, epochs: 100 seqlen 6: 7.15	 % train, 5.20	% test. Time elapsed: 391.5270960330963s.
 GRU 2-digit addition, epochs: 100 seqlen 6: 0.99	 % train, 0.57	% test. Time elapsed: 405.2037501335144s.
+GRU 2-digit addition, epochs: 20 seqlen 7: 13.55	 % train, 10.20	% test. Time elapsed: 376.64996814727783s.
+GRU 2-digit addition, epochs: 100 seqlen 7: 29.57	 % train, 24.53	% test. Time elapsed: 1865.3801319599152s.
